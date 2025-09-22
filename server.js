@@ -1,12 +1,14 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // ✅ Use Render's dynamic port
 
 const appointmentsFile = path.join(__dirname, 'appointments.json');
 const complaintsFile = path.join(__dirname, 'complaints.json');
 
+// Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -31,6 +33,11 @@ function auth(req, res, next) {
 }
 
 // --- Routes ---
+
+// Root route → serve main page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index1.html'));
+});
 
 // Serve hospital dashboard page
 app.get('/hospital', (req, res) => {
@@ -75,4 +82,4 @@ app.post('/complaints', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
