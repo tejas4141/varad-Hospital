@@ -34,6 +34,11 @@ function auth(req, res, next) {
 
 // --- Routes ---
 
+// Health check (for Render uptime checks)
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 // Root route → serve main page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index1.html'));
@@ -46,39 +51,56 @@ app.get('/hospital', (req, res) => {
 
 // Get all appointments (hospital view, requires auth)
 app.get('/appointments', auth, (req, res) => {
-  const data = fs.existsSync(appointmentsFile) ? JSON.parse(fs.readFileSync(appointmentsFile)) : [];
-  res.json(data);
+  try {
+    const data = fs.existsSync(appointmentsFile)
+      ? JSON.parse(fs.readFileSync(appointmentsFile))
+      : [];
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to read appointments.' });
+  }
 });
 
 // Add new appointment (patient booking)
 app.post('/appointments', (req, res) => {
-  const data = fs.existsSync(appointmentsFile) ? JSON.parse(fs.readFileSync(appointmentsFile)) : [];
-  const { name, email, phone, doctor, date, message } = req.body;
+  try {
+    const data = fs.existsSync(appointmentsFile)
+      ? JSON.parse(fs.readFileSync(appointmentsFile))
+      : [];
 
-  if (!name || !email || !phone || !doctor || !date) {
-    return res.status(400).json({ success: false, message: "All fields required." });
+    const { name, email, phone, doctor, date, message } = req.body;
+
+    if (!name || !email || !phone || !doctor || !date) {
+      return res.status(400).json({ success: false, message: 'All fields required.' });
+    }
+
+    const todaysAppointments = data.filter(a => a.date === date && a.doctor === doctor);
+    const queueNumber = todaysAppointments.length + 1;
+
+    const newAppointment = { name, email, phone, doctor, date, message, queueNumber };
+    data.push(newAppointment);
+
+    fs.writeFileSync(appointmentsFile, JSON.stringify(data, null, 2));
+    res.json({ success: true, queueNumber });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to save appointment.' });
   }
-
-  const todaysAppointments = data.filter(a => a.date === date && a.doctor === doctor);
-  const queueNumber = todaysAppointments.length + 1;
-
-  const newAppointment = { name, email, phone, doctor, date, message, queueNumber };
-  data.push(newAppointment);
-
-  fs.writeFileSync(appointmentsFile, JSON.stringify(data, null, 2));
-  res.json({ success: true, queueNumber });
 });
 
 // Add new complaint
 app.post('/complaints', (req, res) => {
-  let complaints = [];
-  if (fs.existsSync(complaintsFile)) {
-    complaints = JSON.parse(fs.readFileSync(complaintsFile));
-  }
+  try {
+    let complaints = [];
+    if (fs.existsSync(complaintsFile)) {
+      complaints = JSON.parse(fs.readFileSync(complaintsFile));
+    }
 
-  complaints.push(req.body);
-  fs.writeFileSync(complaintsFile, JSON.stringify(complaints, null, 2));
-  res.json({ success: true });
+    complaints.push(req.body);
+    fs.writeFileSync(complaintsFile, JSON.stringify(complaints, null, 2));
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to save complaint.' });
+  }
 });
 
 // Start server
