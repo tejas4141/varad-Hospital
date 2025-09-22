@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: varad-hospital
+    env: node
+    rootDir: .   # Project is already in the root
+    buildCommand: ""   # No build step needed
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
