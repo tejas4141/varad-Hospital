@@ -2,9 +2,9 @@ services:
   - type: web
     name: varad-hospital
     env: node
-    rootDir: VARAD-HOSPITAL   # point to the right folder
+    rootDir: VARAD-HOSPITAL
     buildCommand: npm install
-    startCommand: node server.js
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
