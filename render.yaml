@@ -2,9 +2,10 @@ services:
   - type: web
     name: varad-hospital
     env: node
-    rootDir: .     # use current directory
-    buildCommand: npm install
-    startCommand: npm start
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    plan: free
+    autoDeploy: true
     envVars:
       - key: NODE_ENV
         value: production
