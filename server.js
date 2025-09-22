@@ -103,5 +103,7 @@ app.post('/complaints', (req, res) => {
   }
 });
 
-// Start server
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// ✅ Start server (with 0.0.0.0 for Render)
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
