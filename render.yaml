@@ -2,7 +2,7 @@ services:
   - type: web
     name: varad-hospital
     env: node
-    rootDir: VARAD-HOSPITAL
+    rootDir: .     # use current directory
     buildCommand: npm install
     startCommand: npm start
     envVars:
