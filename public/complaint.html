@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complaints - Varad Hospital Atpadi</title>
+<link rel="stylesheet" href="style1.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .complaints-container {
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 25px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #0056b3;
+        margin-bottom: 25px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    input, textarea, select, button {
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 1em;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    button {
+        background-color: #0056b3;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background-color: #003f7f;
+    }
+
+    .success-message {
+        color: green;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .error-message {
+        color: red;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .complaints-container {
+            margin: 20px;
+            padding: 15px;
+        }
+    }
+</style>
+</head>
+<body>
+  <!-- Header -->
+    <header class="navbar">
+        <div class="nav-logo"></div>
+        <div class="nav-welcome">
+            <h1>Welcome To Varad Multispeciality  Hospital Atpadi</h1>
+            <h2>Advanced Medical Services & Emergency Care</h2>
+        </div>
+        <div class="nav-yojna"></div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar1">
+        <ul>
+            <li><a class="nav-link active" href="index1.html"><i class="bi bi-house-door-fill"></i> HOME</a></li>
+            <li><a class="nav-link" href="service.html">SERVICES</a></li>
+            <li><a class="nav-link" href="aboutus.html">ABOUT US</a></li>
+            <li><a class="nav-link" href="hospital.html">HOSPITAL LOGIN</a></li>
+            <li><a class="nav-link" href="complaint.html">COMPLAINTS</a></li>
+        </ul>
+    </nav>
+
+<div class="complaints-container">
+    <h1>Complaints / तक्रारी</h1>
+
+    <div id="feedback"></div>
+
+    <form id="complaintForm">
+        <input type="text" id="name" placeholder="Full Name / पूर्ण नाव" required>
+        <input type="email" id="email" placeholder="Email / ईमेल" required>
+        <input type="tel" id="phone" placeholder="Phone / फोन नंबर" required>
+        <select id="department" required>
+            <option value="">--Select Department / विभाग निवडा--</option>
+            <option value="General">General / सामान्य</option>
+            <option value="OPD">OPD / बाह्य रुग्ण विभाग</option>
+            <option value="Emergency">Emergency / आपत्कालीन</option>
+            <option value="Billing">Billing / बिले</option>
+            <option value="Other">Other / अन्य</option>
+        </select>
+        <textarea id="message" rows="5" placeholder="Your Complaint / आपली तक्रार" required></textarea>
+        <button type="submit">Submit Complaint / तक्रार सबमिट करा</button>
+    </form>
+</div>
+
+<script>
+const form = document.getElementById('complaintForm');
+const feedback = document.getElementById('feedback');
+
+// Your hospital WhatsApp number with country code
+const whatsappNumber = "7499799393";
+
+form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const data = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        department: document.getElementById('department').value,
+        message: document.getElementById('message').value
+    };
+
+    // 1️⃣ Send to backend (Node.js server)
+    try {
+        const res = await fetch('/complaints', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (!result.success) throw new Error(result.message);
+    } catch (err) {
+        feedback.innerHTML = `<div class="error-message">Error saving complaint: ${err.message} / तक्रार जतन करण्यात त्रुटी</div>`;
+        return;
+    }
+
+    // 2️⃣ Send WhatsApp message
+    const text = `New Complaint:%0AName: ${data.name}%0AEmail: ${data.email}%0APhone: ${data.phone}%0ADepartment: ${data.department}%0AMessage: ${data.message}`;
+    window.open(`https://wa.me/${whatsappNumber}?text=${text}`, "_blank");
+
+    feedback.innerHTML = '<div class="success-message">Complaint submitted successfully! / तक्रार यशस्वीरित्या सबमिट केली गेली!</div>';
+    form.reset();
+});
+</script>
+
+</body>
+</html>

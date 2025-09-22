@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Varad Hospital Atpadi</title>
+    <link rel="stylesheet" href="style1.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.13.1/font/bootstrap-icons.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="navbar">
+        <div class="nav-logo"></div>
+        <div class="nav-welcome">
+            <h1>Welcome To Varad Multispeciality  Hospital Atpadi</h1>
+            <h2>Advanced Medical Services & Emergency Care</h2>
+        </div>
+        <div class="nav-yojna"></div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar1">
+        <ul>
+            <li><a class="nav-link active" href="#"><i class="bi bi-house-door-fill"></i> HOME</a></li>
+            <li><a class="nav-link" href="service.html">SERVICES</a></li>
+            <li><a class="nav-link" href="aboutus.html">ABOUT US</a></li>
+            <li><a class="nav-link" href="hospital.html">HOSPITAL LOGIN</a></li>
+            <li><a class="nav-link" href="complaint.html">COMPLAINTS</a></li>
+        </ul>
+    </nav>
+
+    <!-- Doctor Section -->
+    <section class="doctor-section">
+        <h2 class="doctor-heading">Our Professional Doctors</h2>
+
+        <!-- Doctor 1 -->
+        <div class="profile-card">
+            <div class="profile-img"
+                style="background-image: url('https://i.pinimg.com/736x/06/b1/85/06b185e5b2322f1ab0557db59b554cd5.jpg');">
+            </div>
+            <div class="profile-info">
+                <h3>Dr. Aditya Prashant Ravan</h3>
+                <p>M.B.B.S, MD (Medicine)</p>
+                <button class="toggle-btn">Show More</button>
+                <div class="extra-info">
+                    <p>Reg. No: MMC2015052960</p>
+                    <p>Member of Indian Academy of Echocardiography</p>
+                    <p><strong>Speciality:</strong> <span class="speciality">Physician</span></p>
+                    <p><strong>Experience:</strong> <span class="experience">8+ Years</span></p>
+                    <p class="address">Varad Multispeciality Hospital & Trauma Center, Atpadi</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Doctor 2 -->
+        <div class="profile-card">
+            <div class="profile-img"
+                style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyigEQwGCJD7fLELkvm1vFuHElFXTFEBnoCg&s');">
+            </div>
+            <div class="profile-info">
+                <h3>Dr. Snehal Aditya Ravan</h3>
+                <p>M.B.B.S, DGO, FCPS (Gynaecology)</p>
+                <button class="toggle-btn">Show More</button>
+                <div class="extra-info">
+                    <p><strong>Speciality:</strong> <span class="speciality">Gynaecologist</span></p>
+                    <p><strong>Experience:</strong> <span class="experience">8+ Years</span></p>
+                    <p class="address">Varad Multispeciality Hospital & Trauma Center, Atpadi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Appointment Section -->
+    <section class="appointment-section">
+        <h2 class="appointment-heading">Book an Appointment</h2>
+        <div class="appointment-form-container">
+            <form class="appointment-form" id="appointmentForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="doctor">Select Doctor</label>
+                    <select id="doctor" name="doctor" required>
+                        <option value="">--Select--</option>
+                        <option value="Dr. Aditya Prashant Ravan">Dr. Aditya Prashant Ravan</option>
+                        <option value="Dr. Snehal Aditya Ravan">Dr. Snehal Aditya Ravan</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Appointment Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Additional Message</label>
+                    <textarea id="message" name="message" placeholder="Your message here..." rows="4"></textarea>
+                </div>
+                <div id="successMessage" style="display:none; color: green; font-weight:bold; margin-top:10px;"></div>
+
+                <button type="submit" class="appointment-btn">Book Appointment</button>
+            </form>
+        </div>
+
+        <!-- Live Table -->
+        <h2 class="appointment-heading">Booked Patients</h2>
+        <div class="table-container">
+            <table id="patientsTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Patient Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Doctor</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Appointments will load here -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; <span id="year"></span> Varad Hospital Atpadi. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        const navLinks = document.querySelectorAll(".nav-link");
+        navLinks.forEach(link => {
+            link.addEventListener("click", function () {
+                navLinks.forEach(l => l.classList.remove("active"));
+                this.classList.add("active");
+            });
+        });
+
+        const toggleButtons = document.querySelectorAll(".toggle-btn");
+        toggleButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const extraInfo = this.nextElementSibling;
+                if (extraInfo.style.display === "block") {
+                    extraInfo.style.display = "none";
+                    this.textContent = "Show More";
+                } else {
+                    extraInfo.style.display = "block";
+                    this.textContent = "Show Less";
+                }
+            });
+        });
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Load existing appointments
+        async function loadAppointments() {
+            const res = await fetch('/appointments');
+            const appointments = await res.json();
+
+            const tbody = document.querySelector("#patientsTable tbody");
+            tbody.innerHTML = "";
+
+            appointments.forEach(a => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${a.date}</td>
+                    <td>${a.name}</td>
+                    <td>${a.email}</td>
+                    <td>${a.phone}</td>
+                    <td>${a.doctor}</td>
+                    <td>${a.message}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        loadAppointments();
+
+        // Appointment Form
+        const form = document.getElementById("appointmentForm");
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const doctor = document.getElementById("doctor").value;
+            const date = document.getElementById("date").value;
+            const message = document.getElementById("message").value;
+
+            if (!doctor) {
+                alert("Please select a doctor.");
+                return;
+            }
+
+            // WhatsApp message
+            const whatsappNumber = "7499799393";
+            const text = `Hello, I want to book an appointment.%0AName: ${name}%0AEmail: ${email}%0APhone: ${phone}%0ADoctor: ${doctor}%0ADate: ${date}%0AMessage: ${message}`;
+            window.open(`https://wa.me/${whatsappNumber}?text=${text}`, "_blank");
+
+            // Save to backend
+            await fetch('/appointments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, phone, doctor, date, message })
+            });
+
+            // Reload table
+            loadAppointments();
+
+            form.reset();
+        });
+        if (result.success) alert(`Appointment booked! Queue #${result.queueNumber}`);
+        if (result.success) {
+            document.getElementById("successMessage").style.display = "block";
+            document.getElementById("successMessage").textContent =
+                `✅ Your Appointment has been booked successfully on ${result.queueNumber} number.`;
+        }
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hospital Dashboard</title>
+<link rel="stylesheet" href="style1.css">
+</head>
+<body>
+      <!-- Header -->
+    <header class="navbar">
+        <div class="nav-logo"></div>
+        <div class="nav-welcome">
+            <h1>Welcome To Varad Multispeciality  Hospital Atpadi</h1>
+            <h2>Advanced Medical Services & Emergency Care</h2>
+        </div>
+        <div class="nav-yojna"></div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar1">
+        <ul>
+            <li><a class="nav-link active" href="#"><i class="bi bi-house-door-fill"></i> HOME</a></li>
+            <li><a class="nav-link" href="service.html">SERVICES</a></li>
+            <li><a class="nav-link" href="aboutus.html">ABOUT US</a></li>
+            <li><a class="nav-link" href="hospital.html">HOSPITAL LOGIN</a></li>
+            <li><a class="nav-link" href="complaint.html">COMPLAINTS</a></li>
+        </ul>
+    </nav>
+
+<h1>Hospital Dashboard</h1>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Queue No</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Doctor</th>
+      <th>Date</th>
+      <th>Message</th>
+    </tr>
+  </thead>
+  <tbody id="appointments"></tbody>
+</table>
+
+<script>
+async function loadAppointments() {
+  try {
+    const response = await fetch("/appointments", {
+      headers: {
+        "Authorization": "Basic " + btoa("hospital:1234")
+      }
+    });
+
+    if (!response.ok) throw new Error("HTTP " + response.status);
+
+    const data = await response.json();
+    const tbody = document.getElementById("appointments");
+    tbody.innerHTML = "";
+
+    data.forEach(a => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${a.queueNumber}</td>
+          <td>${a.name}</td>
+          <td>${a.email}</td>
+          <td>${a.phone}</td>
+          <td>${a.doctor}</td>
+          <td>${a.date}</td>
+          <td>${a.message || ""}</td>
+        </tr>
+      `;
+    });
+  } catch (err) {
+    alert("Error loading appointments: " + err.message);
+  }
+}
+
+loadAppointments();
+</script>
+</body>
+</html>
