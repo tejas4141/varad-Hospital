@@ -36,7 +36,12 @@ function auth(req, res, next) {
 
 // Health check (for Render uptime checks)
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
+  res.json({
+    status: "ok",
+    uptime: process.uptime(),
+    timestamp: Date.now(),
+    message: "Varad Hospital server is running 🚀"
+  });
 });
 
 // Root route → serve main page
@@ -103,7 +108,5 @@ app.post('/complaints', (req, res) => {
   }
 });
 
-// ✅ Start server (with 0.0.0.0 for Render)
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+// Start server
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
